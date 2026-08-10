@@ -20,7 +20,7 @@ abrir_planilha.range('X41').value = data_de_hoje #encontra esse valor da celula 
 qual_valor_ATUALIZADO_de_uma_celula = abrir_planilha.range('X41').value #variavel que equivale ao novo valorr.
 print(f"data atualizada: {qual_valor_ATUALIZADO_de_uma_celula}")
 wb.api.RefreshAll()  ##atualiza o arquivo todo pra puxar com as novas datas 
-time.sleep(25) #espera 10 segundos no codigo apenas para poder para garantir a atualização dos dados
+time.sleep(40) #espera 10 segundos no codigo apenas para poder para garantir a atualização dos dados
 
 ##ETAPA DE TIRAR O PRINT DA IMAGEM DA TABELA 
 
@@ -63,4 +63,6 @@ aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\
 ###### ETAPA DE MANDAR O EMAIL ANEXADO PARA OS EMAIL ESCOLHIDOS:
 
 import win32com.client
+import win32com.client
+wb.save()
 wb.close()
