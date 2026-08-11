@@ -113,7 +113,6 @@ for linha in range(2, ultima_linha_filtro_ajustado + 1):           #ele cria a v
         abrir_planilha_filtro_ajustado.range((linha, 14)).value = ""       #se nao contiver nenhum, deixa vazio 
 
 abrir_planilha_filtro_ajustado
-abrir_planilha_filtro_ajustado.api.ShowAllData() # tira os filtros, tudo visível de novo
 abrir_planilha.api.ShowAllData() # tira os filtros, tirando da outra planilha só por precaução
 
 
