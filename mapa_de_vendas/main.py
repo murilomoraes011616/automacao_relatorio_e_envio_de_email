@@ -36,6 +36,8 @@ proxima_linha_vazia = abrir_planilha_filtro_ajustado.range('A2').end('down').row
 abrir_planilha_filtro_ajustado.range(f'A{proxima_linha_vazia}').paste(paste='values') #Isso resolveria os dois sintomas de uma vez: o #VALOR! sumiria (porque você colaria o
 print(proxima_linha_vazia)
 
+abrir_planilha_filtro_ajustado.api.ShowAllData()
+
 
 ultima_linha_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('down').row #aqui range sgnifica um pedaçõ do codigo(P2) é o ponrto que ele usa como referencia, o .end(down) siginifia a mesma coisa que aperta ctrl seta ora baixo, entao vai pra ultima linha e .row te fala o nuemro dessa linha, ou seja ele usa a celula p2 como referencia, vai pra ultima linha e ega esse n8mero, oque sinigiffica a ultima linha da planilha 
 ultima_coluna_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('right').column # mesma logica da linha de cima, porem ele quer saber aultima coluna, afim de fechar o quadrado da tabela total que vai ser selecionado para ser copiado no futuro 
@@ -110,6 +112,7 @@ for linha in range(2, ultima_linha_filtro_ajustado + 1):           #ele cria a v
     else: 
         abrir_planilha_filtro_ajustado.range((linha, 14)).value = ""       #se nao contiver nenhum, deixa vazio 
 
+abrir_planilha_filtro_ajustado
 abrir_planilha_filtro_ajustado.api.ShowAllData() # tira os filtros, tudo visível de novo
 abrir_planilha.api.ShowAllData() # tira os filtros, tirando da outra planilha só por precaução
 
