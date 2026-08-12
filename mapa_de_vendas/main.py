@@ -80,7 +80,7 @@ for valor in valores:
 
 print("--------------- processo de listar PVS a serem excluidos ---------------")
 time.sleep(5)
-abrir_planilha_PVS_deletados = wb.sheets("PVS_deletados") #abre a panilha de pvs pra serem deletados 
+abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
 proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
 
 print(proxima_linha_vazia_pv_excluidos)
@@ -119,4 +119,6 @@ aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a 
 
 aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
 
+
+abrir_planilha.api.ShowAllData()
 print("---------- Programa finalizado ----------")
