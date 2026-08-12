@@ -54,9 +54,26 @@ print("Endereço:", tabela_filtro.address)
 coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
 coluna_n_visivel.FormulaR1C1 = "=RC[-3]"
 
-
 time.sleep(3)
 abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
+time.sleep(5)
+
+print("Última linha:", ultima_linha)
+
+tabela_filtro = abrir_planilha.range((2, 17), (ultima_linha, 17))
+print("Endereço:", tabela_filtro.address)
+
+coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
+
+for area in coluna_n_visivel.Areas:
+    for celula in area:
+        linha = celula.Row
+
+        valor_m = abrir_planilha.range(f"M{linha}").value
+
+        celula.Value = valor_m
+
+time.sleep(3)
 
 coluna_p_correcao = abrir_planilha.range((2, 16), (ultima_linha, 16))
 coluna_p_correcao.api.Replace(What="Venda servicos", Replacement="Servicos", LookAt=1)
@@ -65,6 +82,7 @@ tabela_filtro.api.AutoFilter(Field=16, Criteria1 = "-".upper().strip() )
 tabela_filtro2= abrir_planilha.range((2, 16), (ultima_linha, 16))
 
 time.sleep(5)
+
 print("---------- listagem dos pvs a serem excluidos ----------")
 range_colunaA = abrir_planilha.range((2, 1), (ultima_linha, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
 coluna_a_visivel = range_colunaA.api.SpecialCells(12)  # ja aqui tonra essa rnage filtrada, visivel, para que possamos manuipular os valores dela 
@@ -75,6 +93,50 @@ for celula in coluna_a_visivel:    #os valores da range que a gente pegou, pega 
 for valor in valores:
     print(valor)    #esse fot foi para pegar os valores que estao dentro do set valores, que sao aqueles que nao estão repetidos, pois se nao pegasse os valores dentro dele, pegaria os que nao tao dentro do set, logo os repetidos.
 
-#---------------------ATÉ AQUI TA CERTO ------------------------
 
 
+print("--------------- processo de listar PVS a serem excluidos ---------------")
+time.sleep(5)
+abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
+proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
+
+print(proxima_linha_vazia_pv_excluidos)
+
+
+time.sleep(5)
+print("---------- jogar os pvs na outra planilha ----------")
+linha_pv_excluido = proxima_linha_vazia_pv_excluidos # tranforma o nome da varaivel que busca a ultima linha 
+for docnum in valores:         #para cada valor dentro do set valores 
+    abrir_planilha_PVS_deletados.range((linha_pv_excluido,1)).value = docnum       #pega a proxima linha vazia na coluna a
+    linha_pv_excluido += 1           #faz virar a proima linha 
+    print(f" a linha 'A{linha_pv_excluido}' recebe o valor {docnum}") #print apenas para vizualização 
+
+wb.api.RefreshAll()
+
+time.sleep(35)
+
+
+aba = wb.sheets('Mapa Diário')   # 1. ele pega o wb.sheets na aba da tabela dinamica e trasnforma na variavel aba
+
+aba.api.PageSetup.PrintArea = 'A2:S44'             # chegamos em uma parte que a biblioteca nao traduziu, então criou uma especie de porta dos fundos, a api., que usando a aba que queremos, e ela, depois podemos dar comandos que o excel usa porem nao traduzidos, normalmente em VBA, fazendo que possamos continuar a  programar em python, o .PageSetup
+
+aba.api.PageSetup.Orientation = 2               # O que é PageSetup? É um objeto nativo do Excel que reúne todas as configurações relacionadas a impressão/exportação de página: margens, orientação, cabeçalho, rodapé, área de impressão, escala, etc. É exatamente o que você configura manualmente indo em Layout da Página no Excel, O que é Orientation? Define se a exportação será em retrato (vertical, como uma folha de carta em pé) ou paisagem (horizontal, deitada) — útil pra tabelas largas, como a sua.
+                                                #Por que o número 2? Aqui é importante entender: como estamos usando o Excel/VBA "cru" através do .api, e não a versão traduzida do Python, não temos nomes bonitos disponíveis (tipo "paisagem"). O VBA original usa constantes numéricas pra isso:retrato = 1 e paisagem = 2
+
+aba.api.PageSetup.Zoom = False                    # 4. Por que isso é necessário? O Excel tem duas formas de controlar o tamanho da exportação, que não podem ser usadas ao mesmo tempo:
+                                                  #Zoom fixo (ex: "exportar em 100% do tamanho original")
+                                                  #Ajuste automático pra caber em X páginas (que é o que vamos configurar nas próximas duas linhas)
+                                                  #Por padrão, o Excel geralmente já vem com um Zoom fixo ativo (tipo 100), o que bloquearia o ajuste automático. Zoom = False desativa esse zoom fixo, "abrindo espaço" pra usar o ajuste automático nas linhas seguintes.
+                                                  #Por que False e não um número? Porque, diferente de Orientation (que sempre é numérico), essa propriedade específica aceita tanto um número (se você quisesse um zoom fixo) quanto False (pra dizer "não use zoom fixo, vou usar ajuste automático"
+
+
+aba.api.PageSetup.FitToPagesWide = 1              # 5. FitToPagesWide = 1 → a tabela inteira, não importa quantas colunas tenha, deve caber na largura de uma única página
+
+aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a tabela inteira, não importa quantas linhas tenha, deve caber na altura de uma única página
+
+aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
+print("---------- Programa finalizado ----------")
+
+
+
+#aplicar um filtro em P, e copiar as 4 palavras pra coluna Q, depois retirar o filtro 
