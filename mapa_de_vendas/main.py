@@ -6,7 +6,7 @@ import time # importa biblioteca para poder dar o comando de esperar 10 segundos
 app = xw.App(visible=True)   # cria a instância do Excel; visible=False roda em segundo plano
 app.display_alerts = False   # suprime qualquer alerta/pop-up do Excel, incluindo esse
 wb = app.books.open(
-    r'U:\AREA_DE_DADOS\Indicadores\Gestao de Contratos\FILIAL SP\KPI - Mapa de Vendas\Mapa de vendas v0 - Jul26 -AUTOMATIZADO6.xlsx',
+    r'U:\AREA_DE_DADOS\Indicadores\Gestao de Contratos\FILIAL SP\KPI - Mapa de Vendas\Mapa de vendas v0 - Jul26.xlsx',
     update_links=0   # 0 = não atualiza vínculos automaticamente ao abrir, e não pergunta nada
 )
 
@@ -118,7 +118,4 @@ aba.api.PageSetup.FitToPagesWide = 1              # 5. FitToPagesWide = 1 → a 
 aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a tabela inteira, não importa quantas linhas tenha, deve caber na altura de uma única página
 
 aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
-
-
-abrir_planilha.api.ShowAllData()
 print("---------- Programa finalizado ----------")
