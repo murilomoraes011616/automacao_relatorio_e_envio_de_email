@@ -27,28 +27,28 @@ tabela.api.AutoFilter(Field=16, Criteria1 = "#N/D") #tabela.api.autofilter tem o
 tabela.select() #apenas mostra a tange selecionada visualmente pro programador 
 tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel  
 
-
+#---------------------------------------------------------------------------------------------------------------------------
 #abrir planilho filtro -Ajustado:
-proxima_linha_vazia = ultima_linha + 1
+#proxima_linha_vazia = ultima_linha + 1
 #----------------
-abrir_planilha.range(f'A{proxima_linha_vazia}').paste(paste='values') #Isso resolveria os dois sintomas de uma vez: o #VALOR! sumiria (porque você colaria o
-print(proxima_linha_vazia)
+#abrir_planilha.range(f'A{proxima_linha_vazia}').paste(paste='values') #Isso resolveria os dois sintomas de uma vez: o #VALOR! sumiria (porque você colaria o
+#print(proxima_linha_vazia)
 #------------------
-
-
 #abrir_planilha_filtro_ajustado.api.ShowAllData()
+# ultima_linha_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('down').row #aqui range sgnifica um pedaçõ do codigo(P2) é o ponrto que ele usa como referencia, o .end(down) siginifia a mesma coisa que aperta ctrl seta ora baixo, entao vai pra ultima linha e .row te fala o nuemro dessa linha, ou seja ele usa a celula p2 como referencia, vai pra ultima linha e ega esse n8mero, oque sinigiffica a ultima linha da planilha 
+# ultima_coluna_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('right').column # mesma logica da linha de cima, porem ele quer saber aultima coluna, afim de fechar o quadrado da tabela total que vai ser selecionado para ser copiado no futuro 
+#---------------------------------------------------------------------------------------------------------------------------
 
 
-ultima_linha_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('down').row #aqui range sgnifica um pedaçõ do codigo(P2) é o ponrto que ele usa como referencia, o .end(down) siginifia a mesma coisa que aperta ctrl seta ora baixo, entao vai pra ultima linha e .row te fala o nuemro dessa linha, ou seja ele usa a celula p2 como referencia, vai pra ultima linha e ega esse n8mero, oque sinigiffica a ultima linha da planilha 
-ultima_coluna_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('right').column # mesma logica da linha de cima, porem ele quer saber aultima coluna, afim de fechar o quadrado da tabela total que vai ser selecionado para ser copiado no futuro 
-tabela_filtro_ajustado = abrir_planilha_filtro_ajustado.range((2, 1), (ultima_linha_filtro_ajustado, ultima_coluna_filtro_ajustado))
+
+range_para_filtro = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna))
 time.sleep(5)
-tabela_filtro_ajustado.api.AutoFilter(
+range_para_filtro.api.AutoFilter(
     Field=14,
     Criteria1=["#N/D", "0", "vazia", "Vazia", "VAZIA", "#VALOR!", "", " ", "(Vazias)"],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
-tabela_filtro_ajustado.api.AutoFilter(
+range_para_filtro.api.AutoFilter(
     Field=11,
     Criteria1=["Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
