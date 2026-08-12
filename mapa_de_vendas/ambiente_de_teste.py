@@ -25,16 +25,16 @@ print(tabela) #print o valor da range acima
 
 tabela.api.AutoFilter(Field=16, Criteria1 = "#N/D") #tabela.api.autofilter tem o campo FIELD=16 que significa a coluna, que no caso de A até P, a coluna P é a 16, e o campo criterial é o filtro que vao colocar naquela coluna, e o filtro e so na quela coluna pois uarem os dados dela como parametro ams usa a tabela range inteira por que queremos os dados de todas as linhas mas o filtroé só em uma coluna 
 tabela.select() #apenas mostra a tange selecionada visualmente pro programador 
-tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel 
-tabela_filtrada.Copy() #copia essa range 
+tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel  
 
 
 #abrir planilho filtro -Ajustado:
-abrir_planilha_filtro_ajustado = wb.sheets('Filtro - canal ajustado') #nessa linha tranformamos o wb.sheets(Pedido de Venda) em uma varaivel, basicamente esse sheet é uma função do wlwin
-abrir_planilha_filtro_ajustado.activate() #essa linha faz com que mostre pra mim que aba pedido de vendas foi aberta, pois na linha de cima ela so entrou na aba, mas não significa que mostrou pra mim, o usúario
-proxima_linha_vazia = abrir_planilha_filtro_ajustado.range('A2').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
-abrir_planilha_filtro_ajustado.range(f'A{proxima_linha_vazia}').paste(paste='values') #Isso resolveria os dois sintomas de uma vez: o #VALOR! sumiria (porque você colaria o
+proxima_linha_vazia = ultima_linha + 1
+#----------------
+abrir_planilha.range(f'A{proxima_linha_vazia}').paste(paste='values') #Isso resolveria os dois sintomas de uma vez: o #VALOR! sumiria (porque você colaria o
 print(proxima_linha_vazia)
+#------------------
+
 
 #abrir_planilha_filtro_ajustado.api.ShowAllData()
 
