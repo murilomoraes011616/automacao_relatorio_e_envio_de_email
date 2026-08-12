@@ -53,75 +53,21 @@ tabela_filtro= abrir_planilha.range((2, 16), (ultima_linha, 16))
 print("Endereço:", tabela_filtro.address)
 coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
 coluna_n_visivel.FormulaR1C1 = "=RC[-3]"
-#--------------------------------
 
 
 time.sleep(3)
 abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 
-coluna_n_correcao = abrir_planilha_filtro_ajustado.range((2, 14), (ultima_linha_filtro_ajustado, 14))
-coluna_n_correcao.api.Replace(What="Venda servicos", Replacement="Servicos", LookAt=1) # agora roda com tudo visível
-tabela_filtro_ajustado.api.AutoFilter(Field=11, Criteria1 = "Locacao")
-tabela_filtro_ajustado2 = abrir_planilha_filtro_ajustado.range((2, 14), (ultima_linha_filtro_ajustado, 14))
-
-
-
-
-for linha in range(2, ultima_linha_filtro_ajustado + 1):           #ele cria a variavel temporaria "linha" na range(em python significa sequencia), começando do numero dois e indo ate o numero que representa a ultima linha da minha tabela + 1, ainda não meche no excel, é apenas python cirnado uma sequencia que usa como ultimo numero uma variavel que sim vem do excel Xwlings 
-
-    # Lê o valor da coluna K (Canal de Venda)
-    canal = abrir_planilha_filtro_ajustado.range((linha, 11)).value        #agora cria a variavel canal, que e a varaivel que abre a aba da planilha de filtro ajustado. range que agoralro coincidencia e uma função do xwlings, que agora recebve os parametros de linah , coluna, e como iremos usar de referecnai a coluna K, canal de vendas, ele pega essa coluna, mais a linha da varaivel temporaria, que uma hora vai ser 2, depois 3, depiis 4 e assism vai... e .value faz ele me retonar o valor, entao por exemploq aul valor da range (nesse caso celula) K2, e me retna o valor, que guarda dentro dessa variavel.
-
-    # aqui é uma especie de verificação do valor da variavel canal, se ela estiver vazia, que retorna NONE, ele somente continua, entao ele oula aquela variavel 
-    if canal is None:             #tambem quero que celulas vazias usem como referecnia o campo de descrição, por isso criei esse if 
-        canal = ""
-    else:
-        canal = canal.upper().strip()                #aqui queremos padronizar o texxto para que nas linhas seguintes ele seja filtrado sem erros, então o upper() tranforma o texto em MAISCULAS e o strip() retira eventuais espaços, como " locacao" vira "LOCACAO"
-
-    # Só executa a lógica para linhas cuja coluna K é "Locacao"
-    if canal != "LOCACAO" and canal != "":                   # se a variavel canal nao for nenhuma dessas duas, nao passa, se fosse azul nao passaria mas se fosse LOCACAO satisfazeria apenas um lado da condição, oque nao acionario o continue e deixaria essa variavel passar para proximos passos 
-        continue               #continue quer dizer que ira pular pra proxima variavel temporaria no for, que no caso aqui seria a proxima linha 
-    # Lê a descrição da coluna G
-    descricao = abrir_planilha_filtro_ajustado.range((linha, 7)).value                     #valor da coluna de descrição
-
-    # Se estiver vazia, pula a linha
-    if descricao is None:           #se ela estiver vazia pula a linha, oque e meio inutil pois nunca estará
-        continue
-
-    # Padroniza o texto
-    descricao = descricao.upper().strip()         
-
-    # Verifica as palavras da descrição contem tais letras, se contiverem mudam o valor da coluna N
-    if "INCREMENTO" in descricao:
-        abrir_planilha_filtro_ajustado.range((linha, 14)).value = "INCREMENTO"
-
-    elif "REAJUSTE" in descricao:
-        abrir_planilha_filtro_ajustado.range((linha, 14)).value = "REAJUSTE"
-
-    elif "NOVO CONTRATO" in descricao:
-        abrir_planilha_filtro_ajustado.range((linha, 14)).value = "NOVO CONTRATO"
-
-    elif "RENOVA" in descricao:
-        abrir_planilha_filtro_ajustado.range((linha, 14)).value = "RENOVAÇÃO"
-
-    else: 
-        abrir_planilha_filtro_ajustado.range((linha, 14)).value = ""       #se nao contiver nenhum, deixa vazio 
-
-abrir_planilha_filtro_ajustado
-abrir_planilha.api.ShowAllData() # tira os filtros, tirando da outra planilha só por precaução
-
-
-#filtrando para ficcar somente aqueles que tem o valor vazio,  que serão excluidos no power query 
-tabela_filtro_ajustado.api.AutoFilter(
-    Field=14,
-    Criteria1=["#N/D", "0", "vazia", "Vazia", "VAZIA", "#VALOR!", "", " "],
-    Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
-)
-
+coluna_p_correcao = abrir_planilha.range((2, 16), (ultima_linha, 16))
+coluna_p_correcao.api.Replace(What="Venda servicos", Replacement="Servicos", LookAt=1)
+coluna_p_correcao.api.Replace(What="Novonegocio", Replacement="Novo contrato", LookAt=1) 
+tabela_filtro.api.AutoFilter(Field=16, Criteria1 = "-".upper().strip() )
+tabela_filtro2= abrir_planilha.range((2, 16), (ultima_linha, 16))
+#--------------------------------
 
 print("---------- listagem dos pvs a serem excluidos ----------")
-range_colunaa = abrir_planilha_filtro_ajustado.range((2, 1), (ultima_linha_filtro_ajustado, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
-coluna_a_visivel = range_colunaa.api.SpecialCells(12)  # ja aqui tonra essa rnage filtrada, visivel, para que possamos manuipular os valores dela 
+range_colunaA = abrir_planilha.range((2, 1), (ultima_linha, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
+coluna_a_visivel = range_colunaA.api.SpecialCells(12)  # ja aqui tonra essa rnage filtrada, visivel, para que possamos manuipular os valores dela 
 
 valores = set()      #set tem a função dde receber valores e excluir aqueles repetidos                                   
 for celula in coluna_a_visivel:    #os valores da range que a gente pegou, pega valor por valor                      
@@ -132,7 +78,7 @@ for valor in valores:
 
 print("--------------- processo de listar PVS a serem excluidos ---------------")
 time.sleep(5)
-abrir_planilha_PVS_deletados = wb.sheets("PVS_deletados") #abre a panilha de pvs pra serem deletados 
+abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
 proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
 
 print(proxima_linha_vazia_pv_excluidos)
@@ -172,3 +118,4 @@ aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a 
 aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
 
 print("---------- Programa finalizado ----------")
+abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
