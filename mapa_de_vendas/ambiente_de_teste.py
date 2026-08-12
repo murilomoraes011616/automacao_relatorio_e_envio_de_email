@@ -23,9 +23,9 @@ tabela = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna)) # abrir_pla
 print(tabela) #print o valor da range acima 
 
 
-tabela.api.AutoFilter(Field=16, Criteria1 = "#N/D") #tabela.api.autofilter tem o campo FIELD=16 que significa a coluna, que no caso de A até P, a coluna P é a 16, e o campo criterial é o filtro que vao colocar naquela coluna, e o filtro e so na quela coluna pois uarem os dados dela como parametro ams usa a tabela range inteira por que queremos os dados de todas as linhas mas o filtroé só em uma coluna 
-tabela.select() #apenas mostra a tange selecionada visualmente pro programador 
-tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel  
+#tabela.api.AutoFilter(Field=16, Criteria1 = "#N/D") #tabela.api.autofilter tem o campo FIELD=16 que significa a coluna, que no caso de A até P, a coluna P é a 16, e o campo criterial é o filtro que vao colocar naquela coluna, e o filtro e so na quela coluna pois uarem os dados dela como parametro ams usa a tabela range inteira por que queremos os dados de todas as linhas mas o filtroé só em uma coluna 
+#tabela.select() #apenas mostra a tange selecionada visualmente pro programador 
+#tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel  
 
 #---------------------------------------------------------------------------------------------------------------------------
 #abrir planilho filtro -Ajustado:
@@ -40,16 +40,14 @@ tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range def
 #---------------------------------------------------------------------------------------------------------------------------
 
 
-
-range_para_filtro = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna))
-time.sleep(5)
-range_para_filtro.api.AutoFilter(
+print("chegou aqui")
+range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
+range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Field=13,
     Criteria1=["#N/D", "0", "vazia", "Vazia", "VAZIA", "#VALOR!", "", " ", "(Vazias)", "Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
 #--------------------------------
-
 
 print("Última linha:", ultima_linha_filtro_ajustado)
 tabela_filtro_ajustado2 = abrir_planilha_filtro_ajustado.range((2, 14), (ultima_linha_filtro_ajustado, 14))
