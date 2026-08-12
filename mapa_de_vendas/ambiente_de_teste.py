@@ -44,15 +44,12 @@ tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range def
 range_para_filtro = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna))
 time.sleep(5)
 range_para_filtro.api.AutoFilter(
-    Field=14,
-    Criteria1=["#N/D", "0", "vazia", "Vazia", "VAZIA", "#VALOR!", "", " ", "(Vazias)"],
+    Field=13,
+    Criteria1=["#N/D", "0", "vazia", "Vazia", "VAZIA", "#VALOR!", "", " ", "(Vazias)", "Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
-range_para_filtro.api.AutoFilter(
-    Field=11,
-    Criteria1=["Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
-    Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
-)
+#--------------------------------
+
 
 print("Última linha:", ultima_linha_filtro_ajustado)
 tabela_filtro_ajustado2 = abrir_planilha_filtro_ajustado.range((2, 14), (ultima_linha_filtro_ajustado, 14))
