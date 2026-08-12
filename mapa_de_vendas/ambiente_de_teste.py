@@ -44,21 +44,20 @@ print("chegou aqui")
 range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
 range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Field=13,
-    Criteria1=["#N/D", "0", "vazia", "Vazia", "VAZIA", "#VALOR!", "", " ", "(Vazias)", "Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
+    Criteria1=["Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
-#--------------------------------
 
-print("Última linha:", ultima_linha_filtro_ajustado)
-tabela_filtro_ajustado2 = abrir_planilha_filtro_ajustado.range((2, 14), (ultima_linha_filtro_ajustado, 14))
-print("Endereço:", tabela_filtro_ajustado2.address)
-coluna_n_visivel = tabela_filtro_ajustado2.api.SpecialCells(12)
+print("Última linha:", ultima_linha)
+tabela_filtro= abrir_planilha.range((2, 16), (ultima_linha, 16))
+print("Endereço:", tabela_filtro.address)
+coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
 coluna_n_visivel.FormulaR1C1 = "=RC[-3]"
-
+#--------------------------------
 
 
 time.sleep(3)
-abrir_planilha_filtro_ajustado.api.ShowAllData() # tira os filtros, tudo visível de novo
+abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 
 coluna_n_correcao = abrir_planilha_filtro_ajustado.range((2, 14), (ultima_linha_filtro_ajustado, 14))
 coluna_n_correcao.api.Replace(What="Venda servicos", Replacement="Servicos", LookAt=1) # agora roda com tudo visível
