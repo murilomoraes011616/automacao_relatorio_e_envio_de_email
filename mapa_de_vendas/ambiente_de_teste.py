@@ -75,6 +75,12 @@ for celula in coluna_a_visivel:    #os valores da range que a gente pegou, pega 
 for valor in valores:
     print(valor)    #esse fot foi para pegar os valores que estao dentro do set valores, que sao aqueles que nao estão repetidos, pois se nao pegasse os valores dentro dele, pegaria os que nao tao dentro do set, logo os repetidos.
 
-
-
 #---------------------ATÉ AQUI TA CERTO ------------------------
+
+
+print("--------------- processo de listar PVS a serem excluidos ---------------")
+time.sleep(5)
+abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
+proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
+
+print(proxima_linha_vazia_pv_excluidos)
