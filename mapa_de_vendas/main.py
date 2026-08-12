@@ -39,7 +39,6 @@ print(tabela) #print o valor da range acima
 # ultima_coluna_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('right').column # mesma logica da linha de cima, porem ele quer saber aultima coluna, afim de fechar o quadrado da tabela total que vai ser selecionado para ser copiado no futuro 
 #---------------------------------------------------------------------------------------------------------------------------
 
-
 print("chegou aqui")
 range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
 range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
@@ -48,6 +47,9 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
 
+#---------------------------------
+time.sleep(10)
+
 print("Última linha:", ultima_linha)
 tabela_filtro= abrir_planilha.range((2, 16), (ultima_linha, 16))
 print("Endereço:", tabela_filtro.address)
@@ -55,14 +57,12 @@ coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
 coluna_n_visivel.FormulaR1C1 = "=RC[-3]"
 #--------------------------------
 
-
 time.sleep(3)
 abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 
 coluna_p_correcao = abrir_planilha.range((2, 16), (ultima_linha, 16))
 coluna_p_correcao.api.Replace(What="Venda servicos", Replacement="Servicos", LookAt=1)
-coluna_p_correcao.api.Replace(What="Novonegocio", Replacement="Novo contrato", LookAt=1) 
-tabela_filtro.api.AutoFilter(Field=16, Criteria1 = "-".upper().strip() )
+tabela_filtro.api.AutoFilter(Field=16, Criteria1 = "-" )
 tabela_filtro2= abrir_planilha.range((2, 16), (ultima_linha, 16))
 
 
