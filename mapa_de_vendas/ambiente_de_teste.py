@@ -22,49 +22,24 @@ ultima_coluna = abrir_planilha.range('P2').end('right').column # mesma logica da
 tabela = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna)) # abrir_planilha.tange(2,) significa o ponto que usaremos como referencia para começar a range, que seria a linha 2 e a celula 1, igual A2 (pra não pegar o cabeçalho) e (ultima_linha, ultima_coluna) gnifica a ultima celula que ele vai pegar, que e a ultima celula x ultima linha, assim pegando o quadrado todo para que possamos palicar o filtro, no caso retornara A2:P3427.
 print(tabela) #print o valor da range acima 
 
+time.sleep(5)
 
-print("chegou aqui")
+print("Última linha:", ultima_linha)
+
+tabela_filtro = abrir_planilha.range((2, 16), (ultima_linha, 16))
+print("Endereço:", tabela_filtro.address)
+
+
+time.sleep(3)
 range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
 range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
-    Field=13,
-    Criteria1=["Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
+    Field=16,
+    Criteria1=["-", " ", ""],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
 
-print("Última linha:", ultima_linha)
-tabela_filtro= abrir_planilha.range((2, 16), (ultima_linha, 16))
-print("Endereço:", tabela_filtro.address)
-coluna_P_visivel = tabela_filtro.api.SpecialCells(12)
-coluna_P_visivel.FormulaR1C1 = "=RC[-3]"
-
-time.sleep(3)
-abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 time.sleep(5)
 
-print("Última linha:", ultima_linha)
-
-tabela_filtro = abrir_planilha.range((2, 17), (ultima_linha, 17))
-print("Endereço:", tabela_filtro.address)
-
-coluna_q_visivel = tabela_filtro.api.SpecialCells(12)
-
-for area in coluna_q_visivel.Areas:
-    for celula in area:
-        linha = celula.Row
-
-        valor_m = abrir_planilha.range(f"M{linha}").value
-
-        celula.Value = valor_m
-
-time.sleep(3)
-
-coluna_p_correcao = abrir_planilha.range((2, 16), (ultima_linha, 16))
-coluna_p_correcao.api.Replace(What="Venda servicos", Replacement="Servicos", LookAt=1)
-coluna_p_correcao.api.Replace(What="Novonegocio", Replacement="Novo contrato", LookAt=1) 
-tabela_filtro.api.AutoFilter(Field=16, Criteria1 = "-".upper().strip() )
-tabela_filtro2= abrir_planilha.range((2, 16), (ultima_linha, 16))
-
-time.sleep(5)
 
 print("---------- listagem dos pvs a serem excluidos ----------")
 range_colunaA = abrir_planilha.range((2, 1), (ultima_linha, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
@@ -78,12 +53,11 @@ for valor in valores:
 
 
 
-print("--------------- processo de listar PVS a serem excluidos ---------------")
 time.sleep(5)
 abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
 proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
 
-print(proxima_linha_vazia_pv_excluidos)
+print(f"a proxima linha vazia é: {proxima_linha_vazia_pv_excluidos}")
 
 
 time.sleep(5)
