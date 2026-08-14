@@ -78,6 +78,12 @@ wb.api.RefreshAll()
 time.sleep(20)
 abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 time.sleep(10)
+#wb.save()
+
+
+
+
+
 
 aba = wb.sheets('Mapa Diário')   # 1. ele pega o wb.sheets na aba da tabela dinamica e trasnforma na variavel aba
 

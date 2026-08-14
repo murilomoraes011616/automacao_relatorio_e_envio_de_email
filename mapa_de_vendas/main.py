@@ -22,53 +22,33 @@ ultima_coluna = abrir_planilha.range('P2').end('right').column # mesma logica da
 tabela = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna)) # abrir_planilha.tange(2,) significa o ponto que usaremos como referencia para começar a range, que seria a linha 2 e a celula 1, igual A2 (pra não pegar o cabeçalho) e (ultima_linha, ultima_coluna) gnifica a ultima celula que ele vai pegar, que e a ultima celula x ultima linha, assim pegando o quadrado todo para que possamos palicar o filtro, no caso retornara A2:P3427.
 print(tabela) #print o valor da range acima 
 
+time.sleep(5)
 
-#tabela.api.AutoFilter(Field=16, Criteria1 = "#N/D") #tabela.api.autofilter tem o campo FIELD=16 que significa a coluna, que no caso de A até P, a coluna P é a 16, e o campo criterial é o filtro que vao colocar naquela coluna, e o filtro e so na quela coluna pois uarem os dados dela como parametro ams usa a tabela range inteira por que queremos os dados de todas as linhas mas o filtroé só em uma coluna 
-#tabela.select() #apenas mostra a tange selecionada visualmente pro programador 
-#tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel  
+print("Última linha:", ultima_linha)
 
-#---------------------------------------------------------------------------------------------------------------------------
-#abrir planilho filtro -Ajustado:
-#proxima_linha_vazia = ultima_linha + 1
-#----------------
-#abrir_planilha.range(f'A{proxima_linha_vazia}').paste(paste='values') #Isso resolveria os dois sintomas de uma vez: o #VALOR! sumiria (porque você colaria o
-#print(proxima_linha_vazia)
-#------------------
-#abrir_planilha_filtro_ajustado.api.ShowAllData()
-# ultima_linha_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('down').row #aqui range sgnifica um pedaçõ do codigo(P2) é o ponrto que ele usa como referencia, o .end(down) siginifia a mesma coisa que aperta ctrl seta ora baixo, entao vai pra ultima linha e .row te fala o nuemro dessa linha, ou seja ele usa a celula p2 como referencia, vai pra ultima linha e ega esse n8mero, oque sinigiffica a ultima linha da planilha 
-# ultima_coluna_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('right').column # mesma logica da linha de cima, porem ele quer saber aultima coluna, afim de fechar o quadrado da tabela total que vai ser selecionado para ser copiado no futuro 
-#---------------------------------------------------------------------------------------------------------------------------
+tabela_filtro = abrir_planilha.range((2, 16), (ultima_linha, 16))
+print("Endereço:", tabela_filtro.address)
 
-print("chegou aqui")
+
+time.sleep(3)
 range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
 range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
-    Field=13,
-    Criteria1=["Pecas", "EQPUsado", "EQPNovo", "Avaria", "Servicos", "Avaria", "PLPrev", "Comissao", "Comissão"],
+    Field=16,
+    Criteria1=["-", " ", ""],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
 
-#---------------------------------
 time.sleep(10)
 
-print("Última linha:", ultima_linha)
-tabela_filtro= abrir_planilha.range((2, 16), (ultima_linha, 16))
-print("Endereço:", tabela_filtro.address)
-coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
-coluna_n_visivel.FormulaR1C1 = "=RC[-3]"
-#--------------------------------
+try:
+    print("---------- listagem dos pvs a serem excluidos ----------")
+    ultima_linha_filtro =abrir_planilha.range('A2').end('down').row
+    range_colunaA = abrir_planilha.range((2, 1), (ultima_linha_filtro, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
+    coluna_a_visivel = range_colunaA.api.SpecialCells(12)  # ja aqui tonra essa rnage filtrada, visivel, para que possamos manuipular os valores dela 
+except Exception:
+    print("⚠️ Nenhum PV para excluir dessa vez: o filtro não encontrou '-', ' ' ou '' na coluna P.")
+    valores = set()
 
-time.sleep(3)
-abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
-
-coluna_p_correcao = abrir_planilha.range((2, 16), (ultima_linha, 16))
-coluna_p_correcao.api.Replace(What="Venda servicos", Replacement="Servicos", LookAt=1)
-tabela_filtro.api.AutoFilter(Field=16, Criteria1 = "-" )
-tabela_filtro2= abrir_planilha.range((2, 16), (ultima_linha, 16))
-
-
-print("---------- listagem dos pvs a serem excluidos ----------")
-range_colunaA = abrir_planilha.range((2, 1), (ultima_linha, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
-coluna_a_visivel = range_colunaA.api.SpecialCells(12)  # ja aqui tonra essa rnage filtrada, visivel, para que possamos manuipular os valores dela 
 
 valores = set()      #set tem a função dde receber valores e excluir aqueles repetidos                                   
 for celula in coluna_a_visivel:    #os valores da range que a gente pegou, pega valor por valor                      
@@ -78,12 +58,14 @@ for valor in valores:
 
 
 
-print("--------------- processo de listar PVS a serem excluidos ---------------")
 time.sleep(5)
 abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
 proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
 
-print(proxima_linha_vazia_pv_excluidos)
+print(f"a proxima linha vazia é: {proxima_linha_vazia_pv_excluidos}")
+
+
+time.sleep(5)
 
 print("---------- jogar os pvs na outra planilha ----------")
 linha_pv_excluido = proxima_linha_vazia_pv_excluidos # tranforma o nome da varaivel que busca a ultima linha 
@@ -93,10 +75,14 @@ for docnum in valores:         #para cada valor dentro do set valores
     print(f" a linha 'A{linha_pv_excluido}' recebe o valor {docnum}") #print apenas para vizualização 
 
 wb.api.RefreshAll()
+time.sleep(20)
+abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
+time.sleep(10)
+#wb.save()
 
-####################################################################################################################################################################
 
-time.sleep(35)
+
+
 
 
 aba = wb.sheets('Mapa Diário')   # 1. ele pega o wb.sheets na aba da tabela dinamica e trasnforma na variavel aba
@@ -119,3 +105,4 @@ aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a 
 
 aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
 print("---------- Programa finalizado ----------")
+
