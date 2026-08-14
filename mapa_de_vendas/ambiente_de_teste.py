@@ -38,7 +38,7 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
 
-time.sleep(5)
+time.sleep(10)
 
 
 print("---------- listagem dos pvs a serem excluidos ----------")
