@@ -23,23 +23,6 @@ tabela = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna)) # abrir_pla
 print(tabela) #print o valor da range acima 
 
 
-#tabela.api.AutoFilter(Field=16, Criteria1 = "#N/D") #tabela.api.autofilter tem o campo FIELD=16 que significa a coluna, que no caso de A até P, a coluna P é a 16, e o campo criterial é o filtro que vao colocar naquela coluna, e o filtro e so na quela coluna pois uarem os dados dela como parametro ams usa a tabela range inteira por que queremos os dados de todas as linhas mas o filtroé só em uma coluna 
-#tabela.select() #apenas mostra a tange selecionada visualmente pro programador 
-#tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel  
-
-#---------------------------------------------------------------------------------------------------------------------------
-#abrir planilho filtro -Ajustado:
-#proxima_linha_vazia = ultima_linha + 1
-#----------------
-#abrir_planilha.range(f'A{proxima_linha_vazia}').paste(paste='values') #Isso resolveria os dois sintomas de uma vez: o #VALOR! sumiria (porque você colaria o
-#print(proxima_linha_vazia)
-#------------------
-#abrir_planilha_filtro_ajustado.api.ShowAllData()
-# ultima_linha_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('down').row #aqui range sgnifica um pedaçõ do codigo(P2) é o ponrto que ele usa como referencia, o .end(down) siginifia a mesma coisa que aperta ctrl seta ora baixo, entao vai pra ultima linha e .row te fala o nuemro dessa linha, ou seja ele usa a celula p2 como referencia, vai pra ultima linha e ega esse n8mero, oque sinigiffica a ultima linha da planilha 
-# ultima_coluna_filtro_ajustado = abrir_planilha_filtro_ajustado.range('A2').end('right').column # mesma logica da linha de cima, porem ele quer saber aultima coluna, afim de fechar o quadrado da tabela total que vai ser selecionado para ser copiado no futuro 
-#---------------------------------------------------------------------------------------------------------------------------
-
-
 print("chegou aqui")
 range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
 range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
@@ -51,8 +34,8 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
 print("Última linha:", ultima_linha)
 tabela_filtro= abrir_planilha.range((2, 16), (ultima_linha, 16))
 print("Endereço:", tabela_filtro.address)
-coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
-coluna_n_visivel.FormulaR1C1 = "=RC[-3]"
+coluna_P_visivel = tabela_filtro.api.SpecialCells(12)
+coluna_P_visivel.FormulaR1C1 = "=RC[-3]"
 
 time.sleep(3)
 abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
@@ -63,9 +46,9 @@ print("Última linha:", ultima_linha)
 tabela_filtro = abrir_planilha.range((2, 17), (ultima_linha, 17))
 print("Endereço:", tabela_filtro.address)
 
-coluna_n_visivel = tabela_filtro.api.SpecialCells(12)
+coluna_q_visivel = tabela_filtro.api.SpecialCells(12)
 
-for area in coluna_n_visivel.Areas:
+for area in coluna_q_visivel.Areas:
     for celula in area:
         linha = celula.Row
 
@@ -104,6 +87,7 @@ print(proxima_linha_vazia_pv_excluidos)
 
 
 time.sleep(5)
+
 print("---------- jogar os pvs na outra planilha ----------")
 linha_pv_excluido = proxima_linha_vazia_pv_excluidos # tranforma o nome da varaivel que busca a ultima linha 
 for docnum in valores:         #para cada valor dentro do set valores 
@@ -111,32 +95,3 @@ for docnum in valores:         #para cada valor dentro do set valores
     linha_pv_excluido += 1           #faz virar a proima linha 
     print(f" a linha 'A{linha_pv_excluido}' recebe o valor {docnum}") #print apenas para vizualização 
 
-wb.api.RefreshAll()
-
-time.sleep(35)
-
-
-aba = wb.sheets('Mapa Diário')   # 1. ele pega o wb.sheets na aba da tabela dinamica e trasnforma na variavel aba
-
-aba.api.PageSetup.PrintArea = 'A2:S44'             # chegamos em uma parte que a biblioteca nao traduziu, então criou uma especie de porta dos fundos, a api., que usando a aba que queremos, e ela, depois podemos dar comandos que o excel usa porem nao traduzidos, normalmente em VBA, fazendo que possamos continuar a  programar em python, o .PageSetup
-
-aba.api.PageSetup.Orientation = 2               # O que é PageSetup? É um objeto nativo do Excel que reúne todas as configurações relacionadas a impressão/exportação de página: margens, orientação, cabeçalho, rodapé, área de impressão, escala, etc. É exatamente o que você configura manualmente indo em Layout da Página no Excel, O que é Orientation? Define se a exportação será em retrato (vertical, como uma folha de carta em pé) ou paisagem (horizontal, deitada) — útil pra tabelas largas, como a sua.
-                                                #Por que o número 2? Aqui é importante entender: como estamos usando o Excel/VBA "cru" através do .api, e não a versão traduzida do Python, não temos nomes bonitos disponíveis (tipo "paisagem"). O VBA original usa constantes numéricas pra isso:retrato = 1 e paisagem = 2
-
-aba.api.PageSetup.Zoom = False                    # 4. Por que isso é necessário? O Excel tem duas formas de controlar o tamanho da exportação, que não podem ser usadas ao mesmo tempo:
-                                                  #Zoom fixo (ex: "exportar em 100% do tamanho original")
-                                                  #Ajuste automático pra caber em X páginas (que é o que vamos configurar nas próximas duas linhas)
-                                                  #Por padrão, o Excel geralmente já vem com um Zoom fixo ativo (tipo 100), o que bloquearia o ajuste automático. Zoom = False desativa esse zoom fixo, "abrindo espaço" pra usar o ajuste automático nas linhas seguintes.
-                                                  #Por que False e não um número? Porque, diferente de Orientation (que sempre é numérico), essa propriedade específica aceita tanto um número (se você quisesse um zoom fixo) quanto False (pra dizer "não use zoom fixo, vou usar ajuste automático"
-
-
-aba.api.PageSetup.FitToPagesWide = 1              # 5. FitToPagesWide = 1 → a tabela inteira, não importa quantas colunas tenha, deve caber na largura de uma única página
-
-aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a tabela inteira, não importa quantas linhas tenha, deve caber na altura de uma única página
-
-aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
-print("---------- Programa finalizado ----------")
-
-
-
-#aplicar um filtro em P, e copiar as 4 palavras pra coluna Q, depois retirar o filtro 
