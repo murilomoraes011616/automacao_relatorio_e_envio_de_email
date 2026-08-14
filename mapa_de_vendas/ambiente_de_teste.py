@@ -40,10 +40,15 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
 
 time.sleep(10)
 
+try:
+    print("---------- listagem dos pvs a serem excluidos ----------")
+    ultima_linha_filtro =abrir_planilha.range('A2').end('down').row
+    range_colunaA = abrir_planilha.range((2, 1), (ultima_linha_filtro, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
+    coluna_a_visivel = range_colunaA.api.SpecialCells(12)  # ja aqui tonra essa rnage filtrada, visivel, para que possamos manuipular os valores dela 
+except Exception:
+    print("⚠️ Nenhum PV para excluir dessa vez: o filtro não encontrou '-', ' ' ou '' na coluna P.")
+    valores = set()
 
-print("---------- listagem dos pvs a serem excluidos ----------")
-range_colunaA = abrir_planilha.range((2, 1), (ultima_linha, 1)) #aqui nessa linha ele pega a range que passou pelo filtro 
-coluna_a_visivel = range_colunaA.api.SpecialCells(12)  # ja aqui tonra essa rnage filtrada, visivel, para que possamos manuipular os valores dela 
 
 valores = set()      #set tem a função dde receber valores e excluir aqueles repetidos                                   
 for celula in coluna_a_visivel:    #os valores da range que a gente pegou, pega valor por valor                      
