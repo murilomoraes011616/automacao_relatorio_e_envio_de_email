@@ -37,7 +37,6 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Criteria1=["-", " ", ""],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
-
 time.sleep(10)
 
 try:
@@ -57,7 +56,7 @@ for valor in valores:
     print(valor)    #esse fot foi para pegar os valores que estao dentro do set valores, que sao aqueles que nao estão repetidos, pois se nao pegasse os valores dentro dele, pegaria os que nao tao dentro do set, logo os repetidos.
 
 
-
+abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 time.sleep(5)
 abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
 proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
@@ -75,15 +74,18 @@ for docnum in valores:         #para cada valor dentro do set valores
     print(f" a linha 'A{linha_pv_excluido}' recebe o valor {docnum}") #print apenas para vizualização 
 
 #para diminuir os erros, criei uma coluna igual a P, porem como ela usa os valores fixos como referencia, na hra que eu atualizar  o power query os valores nao serao formatados, assim posso fazer eventuais correcoes no tipo de canal caso exista algum erro, e passo a usar essa nova coluna para fazer asreferencias da aba de mapa diario 
-ultima_linha = abrir_planilha.range("O" + str(abrir_planilha.cells.last_cell.row)).end("up").row
-abrir_planilha.range(f"P2:P{ultima_linha}").value = abrir_planilha.range(f"O2:O{ultima_linha}").value
-#--------------
+ultima_linha = abrir_planilha.range(
+    "P" + str(abrir_planilha.cells.last_cell.row)
+).end("up").row
+
+for linha in range(2, ultima_linha + 1):
+    abrir_planilha.range(f"R{linha}").value = abrir_planilha.range(f"P{linha}").value
+#----------------------------------------
 
 
 
 wb.api.RefreshAll()
 time.sleep(20)
-abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 time.sleep(10)
 #wb.save()
 
