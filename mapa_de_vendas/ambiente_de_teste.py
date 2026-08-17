@@ -74,6 +74,13 @@ for docnum in valores:         #para cada valor dentro do set valores
     linha_pv_excluido += 1           #faz virar a proima linha 
     print(f" a linha 'A{linha_pv_excluido}' recebe o valor {docnum}") #print apenas para vizualização 
 
+#para diminuir os erros, criei uma coluna igual a P, porem como ela usa os valores fixos como referencia, na hra que eu atualizar  o power query os valores nao serao formatados, assim posso fazer eventuais correcoes no tipo de canal caso exista algum erro, e passo a usar essa nova coluna para fazer asreferencias da aba de mapa diario 
+ultima_linha = abrir_planilha.range("O" + str(abrir_planilha.cells.last_cell.row)).end("up").row
+abrir_planilha.range(f"P2:P{ultima_linha}").value = abrir_planilha.range(f"O2:O{ultima_linha}").value
+#--------------
+
+
+
 wb.api.RefreshAll()
 time.sleep(20)
 abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
