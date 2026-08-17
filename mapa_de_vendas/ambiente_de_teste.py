@@ -56,7 +56,7 @@ for valor in valores:
     print(valor)    #esse fot foi para pegar os valores que estao dentro do set valores, que sao aqueles que nao estão repetidos, pois se nao pegasse os valores dentro dele, pegaria os que nao tao dentro do set, logo os repetidos.
 
 
-abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
+
 time.sleep(5)
 abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
 proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
@@ -78,8 +78,13 @@ ultima_linha = abrir_planilha.range(
     "P" + str(abrir_planilha.cells.last_cell.row)
 ).end("up").row
 
+# Limpa a coluna R
+abrir_planilha.range(f"R2:R{ultima_linha}").clear_contents()
+
+# Copia P para R, linha por linha, como valor
 for linha in range(2, ultima_linha + 1):
-    abrir_planilha.range(f"R{linha}").value = abrir_planilha.range(f"P{linha}").value
+    valor = abrir_planilha.range(f"P{linha}").value
+    abrir_planilha.range(f"R{linha}").value = valor
 #----------------------------------------
 
 
