@@ -6,7 +6,7 @@ import time # importa biblioteca para poder dar o comando de esperar 10 segundos
 app = xw.App(visible=True)   # cria a instância do Excel; visible=False roda em segundo plano
 app.display_alerts = False   # suprime qualquer alerta/pop-up do Excel, incluindo esse
 wb = app.books.open(
-    r'U:\AREA_DE_DADOS\Indicadores\Gestao de Contratos\FILIAL SP\KPI - Mapa de Vendas\Mapa de vendas v0 - Jul26.xlsx',
+    r'U:\AREA_DE_DADOS\Indicadores\Gestao de Contratos\FILIAL SP\KPI - Mapa de Vendas\Mapa de vendas v0 - Jul26 -AUTOMATIZADO6.xlsx',
     update_links=0   # 0 = não atualiza vínculos automaticamente ao abrir, e não pergunta nada
 )
 
@@ -23,7 +23,7 @@ tabela = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna)) # abrir_pla
 print(tabela) #print o valor da range acima 
 
 
-tabela.api.AutoFilter(Field=16, Criteria1 = "#N/D") #tabela.api.autofilter tem o campo FIELD=16 que significa a coluna, que no caso de A até P, a coluna P é a 16, e o campo criterial é o filtro que vao colocar naquela coluna, e o filtro e so na quela coluna pois uarem os dados dela como parametro ams usa a tabela range inteira por que queremos os dados de todas as linhas mas o filtroé só em uma coluna 
+tabela.api.AutoFilter(Field=16, Criteria1 = "-") #tabela.api.autofilter tem o campo FIELD=16 que significa a coluna, que no caso de A até P, a coluna P é a 16, e o campo criterial é o filtro que vao colocar naquela coluna, e o filtro e so na quela coluna pois uarem os dados dela como parametro ams usa a tabela range inteira por que queremos os dados de todas as linhas mas o filtroé só em uma coluna 
 tabela.select() #apenas mostra a tange selecionada visualmente pro programador 
 tabela_filtrada = tabela.api.SpecialCells(12) #nessa linha tranforma a range definida acima em obejto para se tornar manipulavel 
 tabela_filtrada.Copy() #copia essa range 
@@ -137,8 +137,7 @@ for valor in valores:
 
 print("--------------- processo de listar PVS a serem excluidos ---------------")
 time.sleep(5)
-abrir_planilha_PVS_deletados = wb.sheets("pv_excluid" \
-"os") #abre a panilha de pvs pra serem deletados 
+abrir_planilha_PVS_deletados = wb.sheets("pv_excluidos") #abre a panilha de pvs pra serem deletados 
 proxima_linha_vazia_pv_excluidos = abrir_planilha_PVS_deletados.range('A1').end('down').row + 1 #faz a mesma coisa de antes, porem agora usa como referencia a primeira celula da minha range,.end('down') vai até a ultima linha preenchida + 1, oque da na primeira linha vazia da primeira coluna, que e onde a gente vai colar nossas infromações 
 
 print(proxima_linha_vazia_pv_excluidos)
