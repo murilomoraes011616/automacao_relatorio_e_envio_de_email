@@ -28,7 +28,17 @@ print("Última linha:", ultima_linha)
 
 tabela_filtro = abrir_planilha.range((2, 16), (ultima_linha, 16))
 print("Endereço:", tabela_filtro.address)
+#------------------------------------------------------------
+# verificar OS da avaria
 
+
+
+
+
+
+
+
+#------------------------------------------------------------
 
 time.sleep(3)
 range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
