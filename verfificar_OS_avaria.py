@@ -43,3 +43,11 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
 linhas_visiveis_dos_dois_filtros = range_para_filtro.SpecialCells(12)  # 12 = xlCellTypeVisible
+
+
+
+valores = set()      #set tem a função dde receber valores e excluir aqueles repetidos                                   
+for celula in linhas_visiveis_dos_dois_filtros:    #os valores da range que a gente pegou, pega valor por valor                      
+    valores.add(celula.DocNum.Value)                 #adiciona o campo value desses valores dentro do nosso set                                            
+for valor in valores:
+    print(valor)
