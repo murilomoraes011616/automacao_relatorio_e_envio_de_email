@@ -58,13 +58,9 @@ print("--------")
 print("--------")
 lista_copias = [
     "andre.santos@greentech.log.br", 
-    "rodrigo.ferrarezzo@greentech.log.br", 
-    "miguel.savtchen@greentech.log.br", 
-    "karina.palmieri@greentech.log.br", 
-    "marcelo.valerio@greentech.log.br", 
+    "rodrigo.ferrarezzo@greentech.log.br",  
     "patricia.pinheiro@greentech.log.br", 
-    "sarah@greentech.log.br",  
-    "elisabete.ferreira@greentech.log.br",  
+    "cristiane@greentech.log.br",
 ]
 mail.CC = ";".join(lista_copias) #lista de copias do email
 copias = mail.CC
