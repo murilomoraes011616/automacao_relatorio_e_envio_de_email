@@ -42,3 +42,4 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Criteria1=["", "0", " "],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
+linhas_visiveis_dos_dois_filtros = range_para_filtro.SpecialCells(12)  # 12 = xlCellTypeVisible
