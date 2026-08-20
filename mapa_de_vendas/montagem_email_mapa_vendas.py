@@ -75,6 +75,6 @@ print(arquivo_MAPA_VENDAS)
 
 print("esperando 10 segundos para poder abrir o display")
 time.sleep(10) #trocar para 30 segundos quando entrar em produção 
-mail.Display()    #decidi colocar display pra poder dar o aval e conferir o email, mas futuramente vou mandar automaticamente 
+mail.Send()    #decidi colocar display pra poder dar o aval e conferir o email, mas futuramente vou mandar automaticamente 
 print("--------")
 print(data_de_hoje)
