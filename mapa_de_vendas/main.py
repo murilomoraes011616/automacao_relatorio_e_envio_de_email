@@ -48,11 +48,13 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Criteria1=["-", " ", ""],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
-#--------------------------------------------------------------------
 time.sleep(10)
+#--------------------------------------------------------------------
 
 
 
+
+#-----------lista os pvs a serem ecluidos, pegando aqueles que passaram pelo filtro anterior 
 try:
     print("---------- listagem dos pvs a serem excluidos ----------")
     ultima_linha_filtro =abrir_planilha.range('A2').end('down').row
@@ -61,13 +63,18 @@ try:
 except Exception:
     print("⚠️ Nenhum PV para excluir dessa vez: o filtro não encontrou '-', ' ' ou '' na coluna P.")
     valores = set()
+#-----------------------------------
 
 
+
+#-------------print e mostra esse valores, retirando os repetidos por meio do set
 valores = set()      #set tem a função dde receber valores e excluir aqueles repetidos                                   
 for celula in coluna_a_visivel:    #os valores da range que a gente pegou, pega valor por valor                      
     valores.add(celula.Value)                 #adiciona o campo value desses valores dentro do nosso set                                            
 for valor in valores:
     print(valor)    #esse fot foi para pegar os valores que estao dentro do set valores, que sao aqueles que nao estão repetidos, pois se nao pegasse os valores dentro dele, pegaria os que nao tao dentro do set, logo os repetidos.
+#-----------------------------------------------------------------------------------------
+
 
 
 
