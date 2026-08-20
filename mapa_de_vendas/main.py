@@ -89,6 +89,7 @@ time.sleep(5)
 
 
 
+#--------------------------coloca os pvs selecionados na aba de PVS exlcuidos 
 print("---------- jogar os pvs na outra planilha ----------")
 linha_pv_excluido = proxima_linha_vazia_pv_excluidos # tranforma o nome da varaivel que busca a ultima linha 
 for docnum in valores:         #para cada valor dentro do set valores 
