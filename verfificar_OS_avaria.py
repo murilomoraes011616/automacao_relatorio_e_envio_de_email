@@ -84,13 +84,13 @@ assinatura = mail.HTMLBody
 meu_texto = (
     f"Bom dia,<br><br>"
     f"seguem os PVS de avaria que estão sem OS: {valores} <br><br>"
-    f"Atenciosamente,<br><br>"
+    f"é possivel alterar ba base de dados as suas OS?, atenciosamente<br><br>"
 )
 mail.HTMLBody = meu_texto + assinatura
 print("--------")
 print("--------")
 lista_copias = [
-    "", 
+    "nathiele.belo@greentech.log.br", 
 ]
 mail.CC = ";".join(lista_copias) #lista de copias do email
 copias = mail.CC
@@ -100,7 +100,7 @@ print("--------")
 
 
 print("--------")
-mail.Subject = f"PVS sem OS avaria do Mapa de vendas, dia {data_de_hoje}." # feito para definir o assunto do email
+mail.Subject = f"PVs de Avaria que estão sem OS, dia {data_de_hoje}." # feito para definir o assunto do email
 assunto_do_email = mail.Subject
 print(f"3 - o assunto do email é: {assunto_do_email}")
 print("--------")
@@ -108,19 +108,11 @@ print("--------")
 
 print("--------")
 lista_emails = [
-    "nathiele.belo@greentech.log.br",
+    "niva@greentech.log.br",
 ]
 mail.To = ";".join(lista_emails) #lista de destinatarios do email, o join formaata cada valor entre ;, pois e o formato que o COM do outlook aceita 
 destinatarios = mail.to 
 print(f"5 - os destinatarios dos email são: {destinatarios}")
-print("--------")
-
-
-
-mail.CC = ";".join(lista_copias) #lista de copias do email
-copias = mail.CC
-print(f"6 - as copias dos email são: {copias}")
-time.sleep(10)
 print("--------")
 
 
