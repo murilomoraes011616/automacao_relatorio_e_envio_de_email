@@ -106,11 +106,6 @@ time.sleep(20)
 time.sleep(10)
 #wb.save()
 
-
-
-
-
-
 aba = wb.sheets('Mapa Diário')   # 1. ele pega o wb.sheets na aba da tabela dinamica e trasnforma na variavel aba
 
 aba.api.PageSetup.PrintArea = 'A2:S44'             # chegamos em uma parte que a biblioteca nao traduziu, então criou uma especie de porta dos fundos, a api., que usando a aba que queremos, e ela, depois podemos dar comandos que o excel usa porem nao traduzidos, normalmente em VBA, fazendo que possamos continuar a  programar em python, o .PageSetup
@@ -131,4 +126,3 @@ aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a 
 
 aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
 print("---------- Programa finalizado ----------")
-
