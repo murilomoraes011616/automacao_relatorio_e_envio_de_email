@@ -2,6 +2,7 @@ import xlwings as xw # importa a biblioteca para manipular o excel .
 from datetime import date   # importa sobemente a função date da biblioteca datetime de pega a data, biblioteca do python ja.
 import time # importa biblioteca para poder dar o comando de esperar 10 segundos 
 
+
 #---------- esse bloco de codigo abre o excel, encontra o arquivo, abre uma aba de isntancia e uma da pllanilha de excel selecionada 
 app = xw.App(visible=True)   # cria a instância do Excel; visible=False roda em segundo plano
 app.display_alerts = False   # suprime qualquer alerta/pop-up do Excel, incluindo esse
