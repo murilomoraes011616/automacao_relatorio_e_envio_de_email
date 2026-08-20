@@ -42,3 +42,91 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Criteria1=["", "0", " "],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
+
+# ListColumns("DocNum").DataBodyRange pega só os dados da coluna DocNum,
+# já excluindo a linha de cabeçalho automaticamente
+coluna_docnum = abrir_planilha.api.ListObjects(1).ListColumns("DocNum").DataBodyRange
+
+# agora sim: só as células visíveis DESSA coluna, depois dos dois filtros
+linhas_visiveis = coluna_docnum.SpecialCells(12)
+
+valores = set()
+for celula in linhas_visiveis:
+    valores.add(celula.Value)
+
+for valor in valores:
+    print(valor)
+
+
+#---------------------------------------
+
+
+
+import win32com.client
+from datetime import date
+import time
+
+#---------------------
+data_de_hoje = date.today()
+outlook = win32com.client.Dispatch("Outlook.Application") # apenas liga o python ao outlook 
+print("1 - conectado ao outlook") 
+#---------------------
+
+
+print("--------")
+mail = outlook.CreateItem(0) #aqui ele segue a arvore, sendo outlook, ou outloo. aberto e crate item, que cria um item, o 0 significa o tipo de itrem, e 0 nesse caso significa email, entao a variavel email tem como resultado a criação de um email dentro do outlook 
+print("2 - mail criado") 
+
+
+print("--------")
+inspetor = mail.GetInspector
+assinatura = mail.HTMLBody
+meu_texto = (
+    f"Bom dia,<br><br>"
+    f"seguem os PVS de avaria que estão sem OS: {valores} <br><br>"
+    f"Atenciosamente,<br><br>"
+)
+mail.HTMLBody = meu_texto + assinatura
+print("--------")
+print("--------")
+lista_copias = [
+    "", 
+]
+mail.CC = ";".join(lista_copias) #lista de copias do email
+copias = mail.CC
+print(f"6 - as copias dos email são: {copias}")
+time.sleep(10)
+print("--------")
+
+
+print("--------")
+mail.Subject = f"PVS sem OS avaria do Mapa de vendas, dia {data_de_hoje}." # feito para definir o assunto do email
+assunto_do_email = mail.Subject
+print(f"3 - o assunto do email é: {assunto_do_email}")
+print("--------")
+
+
+print("--------")
+lista_emails = [
+    "nathiele.belo@greentech.log.br",
+]
+mail.To = ";".join(lista_emails) #lista de destinatarios do email, o join formaata cada valor entre ;, pois e o formato que o COM do outlook aceita 
+destinatarios = mail.to 
+print(f"5 - os destinatarios dos email são: {destinatarios}")
+print("--------")
+
+
+
+mail.CC = ";".join(lista_copias) #lista de copias do email
+copias = mail.CC
+print(f"6 - as copias dos email são: {copias}")
+time.sleep(10)
+print("--------")
+
+
+
+print("esperando 10 segundos para poder abrir o display")
+time.sleep(10) #trocar para 30 segundos quando entrar em produção 
+mail.Display()    #decidi colocar display pra poder dar o aval e conferir o email, mas futuramente vou mandar automaticamente 
+print("--------")
+print(data_de_hoje)
