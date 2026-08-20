@@ -120,6 +120,24 @@ aba.api.PageSetup.FitToPagesTall = 1              # 6. FitToPagesTall = 1 → a 
 aba.api.ExportAsFixedFormat(0, fr'C:\Users\murilo.oliveira\OneDrive - Greentech\Perfil\Desktop\pastas para coisas da  automações\automação de tabela toda segunda\MAPA DE VENDAS.pdf')  # 7. Claro! Vamos ler essa linha inteira em texto corrido, explicando o papel de cada parte conforme ela aparece.
 print("---------- Programa finalizado ----------")
 #------------------------------------------------------------------
+time.sleep(40)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import win32com.client
 from datetime import date
 import time
