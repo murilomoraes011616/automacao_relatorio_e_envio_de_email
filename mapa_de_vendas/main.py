@@ -22,20 +22,25 @@ time.sleep(15) #como a linha de cima so atualiza e nas proximas linhas vou preci
 
 
 
-#--------- pokr meio de um 
+#--------- por meio de comandos da biblioteca xlwings, ele pega a ultima linha da plnilha e a ultima coluna, e depois seleviona uma range(espaço) dessas celulas, para serem manipuladas posteriormente 
 ultima_linha = abrir_planilha.range('P2').end('down').row #aqui range sgnifica um pedaçõ do codigo(P2) é o ponrto que ele usa como referencia, o .end(down) siginifia a mesma coisa que aperta ctrl seta ora baixo, entao vai pra ultima linha e .row te fala o nuemro dessa linha, ou seja ele usa a celula p2 como referencia, vai pra ultima linha e ega esse n8mero, oque sinigiffica a ultima linha da planilha 
 ultima_coluna = abrir_planilha.range('P2').end('right').column # mesma logica da linha de cima, porem ele quer saber aultima coluna, afim de fechar o quadrado da tabela total que vai ser selecionado para ser copiado no futuro 
 tabela = abrir_planilha.range((2, 1), (ultima_linha, ultima_coluna)) # abrir_planilha.tange(2,) significa o ponto que usaremos como referencia para começar a range, que seria a linha 2 e a celula 1, igual A2 (pra não pegar o cabeçalho) e (ultima_linha, ultima_coluna) gnifica a ultima celula que ele vai pegar, que e a ultima celula x ultima linha, assim pegando o quadrado todo para que possamos palicar o filtro, no caso retornara A2:P3427.
 print(tabela) #print o valor da range acima 
+#_-------------------------------------------------------
 
+
+
+#--------printa a ultima linha e po endereco da range apenas para fins de uso futuro no codigo 
 time.sleep(5)
-
 print("Última linha:", ultima_linha)
-
 tabela_filtro = abrir_planilha.range((2, 16), (ultima_linha, 16))
 print("Endereço:", tabela_filtro.address)
+#------------------------------------------------
 
 
+
+#--------filtra  a coluna 16 pelos valores da variavel criterial1
 time.sleep(3)
 range_para_filtro = abrir_planilha.api.ListObjects(1).Range  # já é o range da tabela, direto do COM
 range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
@@ -43,8 +48,10 @@ range_para_filtro.AutoFilter(          # sem .api aqui — já é objeto COM cru
     Criteria1=["-", " ", ""],
     Operator=7  # xlFilterValues — diz "filtra por essa lista de valores"
 )
-
+#--------------------------------------------------------------------
 time.sleep(10)
+
+
 
 try:
     print("---------- listagem dos pvs a serem excluidos ----------")
