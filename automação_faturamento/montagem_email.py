@@ -50,7 +50,7 @@ lista_emails = [
     "marcelo.mota@greentech.log.br",
 ]
 mail.To = ";".join(lista_emails) #lista de destinatarios do email
-destinatarios = mail.to 
+destinatarios = mail.To 
 print(f"5 - os destinatarios dos email são: {destinatarios}")
 print("--------")
 
