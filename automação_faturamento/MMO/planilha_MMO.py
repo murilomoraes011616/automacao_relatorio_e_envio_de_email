@@ -1,6 +1,6 @@
 ################
 import xlwings as xw # importa a biblioteca para manipular o excel .
-from datetime import date
+from datetime import date,  timedelta
 import time
 
 app = xw.App(visible=False)   # cria a instância do Excel; visible=False roda em segundo plano
@@ -15,8 +15,10 @@ qual_qual_valor_de_uma_celula = abrir_planilha.range('X41').value #encontra o va
 print(f"data antiga: {qual_qual_valor_de_uma_celula}")#mostra o valor da celula X41
 
 data_de_hoje = date.today()
+primeiro_dia_mes_atual = data_de_hoje.replace(day=1)
+ultimo_dia_mes_passado = primeiro_dia_mes_atual - timedelta(days=1)
 hoje_formatado = data_de_hoje.strftime('%d-%m-%Y')   # pega a função de hoje da biblioteca datetime e guarda esse valor me um variavel.
-abrir_planilha.range('X41').value = data_de_hoje #encontra esse valor da celula A1 e modifica ele.
+abrir_planilha.range('X41').value = ultimo_dia_mes_passado #encontra esse valor da celula A1 e modifica ele.
 qual_valor_ATUALIZADO_de_uma_celula = abrir_planilha.range('X41').value #variavel que equivale ao novo valorr.
 print(f"data atualizada: {qual_valor_ATUALIZADO_de_uma_celula}")
 wb.api.RefreshAll()  ##atualiza o arquivo todo pra puxar com as novas datas 

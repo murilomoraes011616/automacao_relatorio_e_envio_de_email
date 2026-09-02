@@ -1,5 +1,5 @@
 import win32com.client
-from datetime import date
+from datetime import date, timedelta
 import time
 
 #---------------------
@@ -13,6 +13,13 @@ print("--------")
 mail = outlook.CreateItem(0) #aqui ele segue a arvore, sendo outlook, ou outloo. aberto e crate item, que cria um item, o 0 significa o tipo de itrem, e 0 nesse caso significa email, entao a variavel email tem como resultado a criação de um email dentro do outlook 
 print("2 - mail criado") 
 
+#-------------------------- ultimo dia do mes passado 
+data_de_hoje = date.today()
+primeiro_dia_mes_atual = data_de_hoje.replace(day=1)
+ultimo_dia_mes_passado = primeiro_dia_mes_atual - timedelta(days=1)
+#---------------------------
+
+
 
 
 print("--------")
@@ -20,7 +27,7 @@ inspetor = mail.GetInspector
 assinatura = mail.HTMLBody
 meu_texto = (
     f"Bom dia,<br><br>"
-    f"Seguem anexos os mapas de faturamento, atualizados até {data_de_hoje}. "
+    f"Seguem anexos os mapas de faturamento, atualizados até {ultimo_dia_mes_passado}. "
     f"(Lembrando que as metas individuais não estão atualizadas.)<br><br>"
     f"Att,<br><br>"
 )
@@ -30,11 +37,8 @@ print("--------")
 
 
 
-
-
-
 print("--------")
-mail.Subject = f"Mapas de faturamento do dia {data_de_hoje}." # feito para definir o assunto do email
+mail.Subject = f"Mapas de faturamento do dia {ultimo_dia_mes_passado}." # feito para definir o assunto do email
 assunto_do_email = mail.Subject
 print(f"3 - o assunto do email é: {assunto_do_email}")
 print("--------")
