@@ -99,7 +99,7 @@ for docnum in valores:         #para cada valor dentro do set valores
     print(f" a linha 'A{linha_pv_excluido}' recebe o valor {docnum}") #print apenas para vizualização 
 wb.api.RefreshAll()
 time.sleep(20)
-abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
+#abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 time.sleep(10)
 #wb.save()
 #------------------------------------------------------------------------------------------------------------
@@ -184,7 +184,7 @@ lista_emails = [
     "marcelo.mota@greentech.log.br",
 ]
 mail.To = ";".join(lista_emails) #lista de destinatarios do email, o join formaata cada valor entre ;, pois e o formato que o COM do outlook aceita 
-destinatarios = mail.to 
+destinatarios = mail.To 
 print(f"5 - os destinatarios dos email são: {destinatarios}")
 print("--------")
 
