@@ -101,7 +101,7 @@ wb.api.RefreshAll()
 time.sleep(20)
 #abrir_planilha.api.ShowAllData() # tira os filtros, tudo visível de novo
 time.sleep(10)
-#wb.save()
+wb.save()
 #------------------------------------------------------------------------------------------------------------
 
 
