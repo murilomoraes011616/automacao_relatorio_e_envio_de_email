@@ -6,7 +6,7 @@ import time # importa biblioteca para poder dar o comando de esperar 10 segundos
 app = xw.App(visible=True)   # cria a instância do Excel; visible=False roda em segundo plano
 app.display_alerts = False   # suprime qualquer alerta/pop-up do Excel, incluindo esse
 wb = app.books.open(
-    r'U:\AREA_DE_DADOS\Indicadores\Gestao de Contratos\FILIAL SP\KPI - Mapa de Vendas\Mapa de vendas v0 - Jul26.xlsx',
+    r'U:\AREA_DE_DADOS\Indicadores\Gestao de Contratos\FILIAL SP\KPI - Mapa de Vendas\Mapa de vendas v0 - AUTOMATIZADO.xlsx',
     update_links=0   # 0 = não atualiza vínculos automaticamente ao abrir, e não pergunta nada
 )
 
@@ -111,7 +111,7 @@ lista_emails = [
     "niva@greentech.log.br",
 ]
 mail.To = ";".join(lista_emails) #lista de destinatarios do email, o join formaata cada valor entre ;, pois e o formato que o COM do outlook aceita 
-destinatarios = mail.to 
+destinatarios = mail.To 
 print(f"5 - os destinatarios dos email são: {destinatarios}")
 print("--------")
 
@@ -119,6 +119,6 @@ print("--------")
 
 print("esperando 10 segundos para poder abrir o display")
 time.sleep(10) #trocar para 30 segundos quando entrar em produção 
-mail.display()    #decidi colocar display pra poder dar o aval e conferir o email, mas futuramente vou mandar automaticamente 
+mail.Display()    #decidi colocar display pra poder dar o aval e conferir o email, mas futuramente vou mandar automaticamente 
 print("--------")
 print(data_de_hoje)
